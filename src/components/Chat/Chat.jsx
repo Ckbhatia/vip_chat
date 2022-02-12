@@ -86,11 +86,10 @@ const Chat = () => {
   };
 
   const register = async () => {
-    if (!identity) {
-      throw Error("Please enter a name");
+    if (identity) {
+      setNameRegistered(true);
+      initConversationsClient();
     }
-    setNameRegistered(true);
-    initConversationsClient();
   };
 
   const handleChange = (e) => {
@@ -108,7 +107,7 @@ const Chat = () => {
               onChange={handleChange}
               placeholder="Enter your name"
               />
-            <StyledButton onClick={register}>Submit</StyledButton>
+            <StyledButton onClick={register} disabled={!identity}>Submit</StyledButton>
           </StyledChatContainer>
         </StyledContainer>
       </main>
