@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro";
 
 export const StyledMessageListContainer = styled.ul`
-  max-height: 92vh;
+  height: 92vh;
   ${tw`
     flex flex-col
     list-none

@@ -2,6 +2,8 @@ import React from "react";
 import { Client } from "@twilio/conversations";
 import { STATE } from "../../constants/twilio";
 import { getAccessToken } from "../../services";
+import config from "../../config";
+
 // Styles
 import { StyledButton, StyledInput, StyledChatContainer } from "./Styles";
 import { StyledContainer } from "../Common";
@@ -9,11 +11,14 @@ import { StyledContainer } from "../Common";
 // Component
 import Conversation from "../Conversation";
 
+
+const { userOne, UserTwo, uniqueChatName } = config;
+
 const Chat = () => {
   const [identity, setIdentity] = React.useState("");
   const [activeConversation, setActiveConversation] = React.useState(null);
   const [status, setStatus] = React.useState("");
-  // const [isConnected, setIsConnected] = React.useState(false);
+  const [isConnected, setIsConnected] = React.useState(false);
   const [nameRegistered, setNameRegistered] = React.useState(false);
 
   /**
@@ -22,24 +27,28 @@ const Chat = () => {
   const initConversationsClient = async () => {
     const token = await getAccessToken(identity);
 
+    setStatus("Wait");
+
     Client = await Client.create(token);
 
-    setStatus("Connecting to Twilio...");
+    setStatus("Connecting");
+
+    setIsConnected(true);
 
     Client.on("connectionStateChanged", (state) => {
       switch (state) {
         case STATE.CONNECTED:
-          setStatus("You are connected.");
+          setStatus("Connected.");
           // setIsConnected(true);
           break;
         case STATE.DISCONNECTING:
-          setStatus("Disconnecting from Twilio...");
+          setStatus("Disconnecting.");
           break;
         case STATE.DISCONNECTED:
           setStatus("Failed to connect.");
           break;
         default: {
-          setStatus("Twilio?");
+          setStatus("Twilio");
         }
       }
     });
@@ -49,8 +58,8 @@ const Chat = () => {
     // Ensure User1 and User2 have an open client session
     // TODO: user should be dynamicaly generated instead of static
     try {
-      await Client.getUser("User1");
-      await Client.getUser("User2");
+      await Client.getUser(userOne);
+      await Client.getUser(UserTwo);
     } catch {
       return;
     }
@@ -58,20 +67,20 @@ const Chat = () => {
     // If it already exists, join instead
     try {
       const newConversation = await Client.createConversation({
-        uniqueName: "chat",
+        uniqueName: uniqueChatName,
       });
       const joinedConversation = await newConversation
         .join()
         .catch((err) => console.log(err));
       await joinedConversation
-        .add("User1")
+        .add(userOne)
         .catch((err) => console.log("error: ", err));
       await joinedConversation
-        .add("User2")
+        .add(UserTwo)
         .catch((err) => console.log("error: ", err));
       setActiveConversation(joinedConversation);
     } catch {
-      const res = await Client.getConversationByUniqueName("chat");
+      const res = await Client.getConversationByUniqueName(uniqueChatName);
       setActiveConversation(res);
     }
   };
@@ -109,8 +118,8 @@ const Chat = () => {
       <main>
         <StyledContainer>
           <StyledChatContainer>
-            <span>{status}</span>
-            <StyledButton onClick={createConversation}>Join chat</StyledButton>
+              <span>{status}</span>
+            <StyledButton onClick={createConversation} disabled={!isConnected}>Join chat</StyledButton>
           </StyledChatContainer>
         </StyledContainer>
       </main>
