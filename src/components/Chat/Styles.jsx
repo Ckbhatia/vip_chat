@@ -1,9 +1,7 @@
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
 
-export const StyledMain = tw.main`
-  max-h-40
-  max-w-sm
-  px-4 
+export const StyledChatContainer = styled.div`
+  margin-top: 100px;
 `;
 
 export const StyledInput = tw.input`

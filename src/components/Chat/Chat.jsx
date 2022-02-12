@@ -3,7 +3,8 @@ import { Client } from "@twilio/conversations";
 import { STATE } from "../../constants";
 import { getAccessToken } from "../../services";
 // Styles
-import { StyledButton, StyledInput, StyledMain } from "./Styles";
+import { StyledButton, StyledInput, StyledChatContainer } from "./Styles";
+import { StyledContainer } from "../Common";
 
 // Component
 import Conversation from "../Conversation";
@@ -12,7 +13,7 @@ const Chat = () => {
   const [identity, setIdentity] = React.useState("");
   const [activeConversation, setActiveConversation] = React.useState(null);
   const [status, setStatus] = React.useState("");
-  const [isConnected, setIsConnected] = React.useState(false);
+  // const [isConnected, setIsConnected] = React.useState(false);
   const [nameRegistered, setNameRegistered] = React.useState(false);
 
   /**
@@ -20,26 +21,26 @@ const Chat = () => {
    */
   const initConversationsClient = async () => {
     const token = await getAccessToken(identity);
-    
+
     Client = await Client.create(token);
-    
+
     setStatus("Connecting to Twilio...");
 
     Client.on("connectionStateChanged", (state) => {
       switch (state) {
         case STATE.CONNECTED:
           setStatus("You are connected.");
-          setIsConnected(true);
+          // setIsConnected(true);
           break;
         case STATE.DISCONNECTING:
           setStatus("Disconnecting from Twilio...");
           break;
-        case STATE.DISCONNECTING:
-          setStatus("Disconnected.");
-          break;
         case STATE.DISCONNECTED:
           setStatus("Failed to connect.");
           break;
+        default: {
+          setStatus("Twilio?");
+        }
       }
     });
   };
@@ -89,33 +90,42 @@ const Chat = () => {
 
   if (!nameRegistered) {
     return (
-      <StyledMain>
-        <div>
-          <StyledInput
-            type="text"
-            value={identity}
-            onChange={handleChange}
-            placeholder="Enter your name"
-          />
-          <StyledButton onClick={register}>Register name</StyledButton>
-        </div>
-      </StyledMain>
+      <main>
+        <StyledContainer>
+          <StyledChatContainer>
+            <StyledInput
+              type="text"
+              value={identity}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              />
+            <StyledButton onClick={register}>Submit</StyledButton>
+          </StyledChatContainer>
+        </StyledContainer>
+      </main>
     );
   } else if (nameRegistered && !activeConversation) {
     return (
-      <StyledMain>
-        <div>
-          <span>{status}</span>
-          <StyledButton onClick={createConversation}>Join chat</StyledButton>
-        </div>
-      </StyledMain>
+      <main>
+        <StyledContainer>
+          <StyledChatContainer>
+            <span>{status}</span>
+            <StyledButton onClick={createConversation}>Join chat</StyledButton>
+          </StyledChatContainer>
+        </StyledContainer>
+      </main>
     );
   }
 
   return (
-  <StyledMain>
-    <Conversation activeConversation={activeConversation} currentUser={identity} />
-  </StyledMain>
-  )
+    <main>
+      <StyledContainer>
+        <Conversation
+          activeConversation={activeConversation}
+          currentUser={identity}
+        />
+      </StyledContainer>
+    </main>
+  );
 };
 export default Chat;

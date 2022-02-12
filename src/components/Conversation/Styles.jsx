@@ -1,8 +1,14 @@
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
 
-export const StyledMessageListContainer = tw.ul`
-  flex flex-col
-  list-none
+export const StyledMessageListContainer = styled.ul`
+  max-height: 92vh;
+  ${tw`
+    flex flex-col
+    list-none
+    border-2 border-gray-200
+    overflow-y-scroll
+    px-3
+  `}
 `
 
 export const StyledActionContainer =tw.div`
