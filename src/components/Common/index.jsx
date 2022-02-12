@@ -1,4 +1,10 @@
-import tw from "twin.macro";
+import tw, { styled } from "twin.macro";
+
+export const StyledContainer = styled.div`
+  max-width: 330px;
+  margin: 0 auto;
+  text-align: center;
+`;
 
 export const StyledButton = tw.button`
   px-4 py-2
