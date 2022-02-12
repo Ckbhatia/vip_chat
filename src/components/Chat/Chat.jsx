@@ -1,6 +1,6 @@
 import React from "react";
 import { Client } from "@twilio/conversations";
-import { STATE } from "../../constants";
+import { STATE } from "../../constants/twilio";
 import { getAccessToken } from "../../services";
 // Styles
 import { StyledButton, StyledInput, StyledChatContainer } from "./Styles";
