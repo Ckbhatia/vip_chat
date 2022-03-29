@@ -12,7 +12,7 @@ import { StyledContainer } from "../Common";
 import Conversation from "../Conversation";
 
 
-const { userOne, UserTwo, uniqueChatName } = config;
+const { userOne, userTwo, uniqueChatName } = config;
 
 const Chat = () => {
   const [identity, setIdentity] = React.useState("");
@@ -35,11 +35,11 @@ const Chat = () => {
 
     setIsConnected(true);
 
-    Client.on("connectionStateChanged", (state) => {
+    Client.onWithReplay("connectionStateChanged", (state) => {
       switch (state) {
         case STATE.CONNECTED:
           setStatus("Connected.");
-          // setIsConnected(true);
+          setIsConnected(true);
           break;
         case STATE.DISCONNECTING:
           setStatus("Disconnecting.");
@@ -59,7 +59,7 @@ const Chat = () => {
     // TODO: user should be dynamicaly generated instead of static
     try {
       await Client.getUser(userOne);
-      await Client.getUser(UserTwo);
+      await Client.getUser(userTwo);
     } catch {
       return;
     }
@@ -76,7 +76,7 @@ const Chat = () => {
         .add(userOne)
         .catch((err) => console.log("error: ", err));
       await joinedConversation
-        .add(UserTwo)
+        .add(userTwo)
         .catch((err) => console.log("error: ", err));
       setActiveConversation(joinedConversation);
     } catch {
@@ -105,7 +105,7 @@ const Chat = () => {
               type="text"
               value={identity}
               onChange={handleChange}
-              placeholder="Enter your name"
+              placeholder="Enter username"
               />
             <StyledButton onClick={register} disabled={!identity}>Submit</StyledButton>
           </StyledChatContainer>
