@@ -5,7 +5,7 @@ import { getAccessToken } from "../../services";
 import config from "../../config";
 
 // Styles
-import { StyledButton, StyledInput, StyledChatContainer } from "./Styles";
+import { StyledButton, StyledInput, StyledChatContainer, StyledTextContainer } from "./Styles";
 import { StyledContainer } from "../Common";
 
 // Component
@@ -100,6 +100,11 @@ const Chat = () => {
     return (
       <main>
         <StyledContainer>
+          <StyledTextContainer>
+            <strong>Try: </strong>
+            <span>Roger</span>
+            <span> Or David</span>
+          </StyledTextContainer>
           <StyledChatContainer>
             <StyledInput
               type="text"

@@ -1,7 +1,23 @@
 import tw, { styled } from "twin.macro";
 
-export const StyledChatContainer = styled.div`
+export const StyledTextContainer = styled.div`
   margin-top: 100px;
+
+  ${tw`flex flex-row items-center justify-center`}
+  column-gap: 15px;
+
+  span,
+  strong {
+    font-size: 16px;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+`;
+
+export const StyledChatContainer = styled.div`
+  margin-top: 25px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
