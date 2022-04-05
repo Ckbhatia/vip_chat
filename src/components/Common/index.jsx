@@ -14,3 +14,7 @@ export const StyledButton = tw.button`
   ml-2
   hover:bg-blue-300 border-blue-200 
 `;
+
+export const StyledSpinnerContainer = styled.div`
+  ${tw`flex justify-center items-center`}
+`;
