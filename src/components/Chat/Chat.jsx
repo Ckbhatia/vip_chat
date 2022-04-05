@@ -5,7 +5,7 @@ import { getAccessToken } from "../../services";
 import config from "../../config";
 
 // Styles
-import { StyledButton, StyledInput, StyledChatContainer, StyledTextContainer } from "./Styles";
+import { StyledButton, StyledChatContainer, StyledTextContainer } from "./Styles";
 import { StyledContainer } from "../Common";
 
 // Component
@@ -24,8 +24,8 @@ const Chat = () => {
   /**
    * Initialize the chat client
    */
-  const initConversationsClient = async () => {
-    const token = await getAccessToken(identity);
+  const initConversationsClient = async (username) => {
+    const token = await getAccessToken(identity || username);
 
     setStatus("Wait");
 
@@ -85,15 +85,11 @@ const Chat = () => {
     }
   };
 
-  const register = async () => {
-    if (identity) {
+  const register = async (username) => {
+    if (identity || username) {
       setNameRegistered(true);
-      initConversationsClient();
+      initConversationsClient(username);
     }
-  };
-
-  const handleChange = (e) => {
-    setIdentity(e.target.value);
   };
 
   if (!nameRegistered) {
@@ -101,19 +97,14 @@ const Chat = () => {
       <main>
         <StyledContainer>
           <StyledTextContainer>
-            <strong>Try: </strong>
-            <span>Roger</span>
-            <span> Or David</span>
+            <span>Login as</span>
+            <StyledButton onClick={() => register(config.userOne)}>
+              Roger
+            </StyledButton>
+            <StyledButton onClick={() => register(config.userTwo)}>
+              David
+            </StyledButton>
           </StyledTextContainer>
-          <StyledChatContainer>
-            <StyledInput
-              type="text"
-              value={identity}
-              onChange={handleChange}
-              placeholder="Enter username"
-              />
-            <StyledButton onClick={register} disabled={!identity}>Submit</StyledButton>
-          </StyledChatContainer>
         </StyledContainer>
       </main>
     );
