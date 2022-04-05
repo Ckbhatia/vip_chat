@@ -4,6 +4,7 @@ export const StyledMessageContainer = styled.li`
   ${tw`
     rounded-sm
     w-max
+    max-w-full
     my-2
     p-2
     bg-gray-100
