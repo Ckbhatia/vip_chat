@@ -9,6 +9,7 @@ export const StyledTextContainer = styled.div`
   span,
   strong {
     font-size: 16px;
+    font-weight: 500;
   }
 
   strong {
